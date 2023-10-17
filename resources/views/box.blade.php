@@ -15,21 +15,20 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if (empty($blogs))
-                        <p>※ Boxは空です</p>
+                    <p>※ Boxは空です</p>
                     @else
-                    <div class="flex flex-wrap">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach ($blogs as $blog)
-                        <div class="relative m-4 border border-gray-300 rounded-lg max-w-xs">
-                            <img src="{{ $blog['eyecatch']['url'] }}" class="w-full h-48 object-cover mb-4 rounded-t-lg">
-                            <div class="text-center h-40">
+                        <div class="border border-gray-300 rounded-lg">
+                            <img src="{{ $blog['eyecatch']['url'] }}"
+                                class="w-full h-48 object-cover mb-4 rounded-t-lg">
+                            <div class="p-4">
                                 <h1 class="text-xl mb-2">{{ $blog["title"] }}</h1>
                                 <p class="text-base mb-4">{{ $blog["details"] }}</p>
-                                <div class="absolute bottom-4 w-full">
-                                    <form action="{{ route('blog', $blog['id']) }}" method="post">
-                                        @csrf
-                                        <x-primary-button>閲覧する</x-primary-button>
-                                    </form>
-                                </div>
+                                <form action="{{ route('blog', $blog['id']) }}" method="post" class="text-center">
+                                    @csrf
+                                    <x-primary-button>閲覧する</x-primary-button>
+                                </form>
                             </div>
                         </div>
                         @endforeach
