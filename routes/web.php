@@ -3,7 +3,6 @@
 use App\Http\Controllers\BoxController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\WebhookController;

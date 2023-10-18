@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Purchase;
+use App\Services\BlogService;
 use App\Services\MicroCmsService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     protected $microCmsService;
+    protected $blogService;
 
-    public function __construct(MicroCmsService $microCmsService)
+    //コンストラクタ
+    public function __construct(MicroCmsService $microCmsService, BlogService $blogService)
     {
         $this->microCmsService = $microCmsService;
+        $this->blogService = $blogService;
     }
 
     //ホーム画面
@@ -23,32 +26,9 @@ class HomeController extends Controller
 
         // それぞれのブログについて、カート内に存在するかチェック
         foreach ($blogs['contents'] as &$blog) {
-            $blog['isInCart'] = $this->isCollect($cart, $blog['id']);
+            $blog['isInCart'] = $this->blogService->isBlogCollect($cart, $blog['id']);
         }
 
         return view('home', compact('blogs'));
-    }
-
-    //カートかDBに追加されてないかチェック
-    public function isCollect($cart, $blogId)
-    {
-        $userId = auth()->id();
-
-        // DBのチェック
-        $purchase = Purchase::where('user_id', $userId)
-            ->where('blog_id', $blogId)
-            ->first();
-        if ($purchase) {
-            return 1;  // DBに追加されていた場合
-        }
-
-        // カートのチェック
-        foreach ($cart as $item) {
-            if ($item["id"] === $blogId) {
-                return 2;  // セッションカートに追加されていた場合
-            }
-        }
-
-        return 0;  // どちらにも追加されていなかった場合
     }
 }

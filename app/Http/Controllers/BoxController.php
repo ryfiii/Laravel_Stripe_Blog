@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\MicroCmsService;
 use App\Models\Purchase;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class BoxController extends Controller
 {

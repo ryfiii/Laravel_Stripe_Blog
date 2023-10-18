@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CartService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     //カート画面
     public function cart(Request $request)
     {
-
-        $cart = $request->session()->get("cart", []);
+        $cart = $this->cartService->getCart($request);
         return view("cart", compact("cart"));
     }
 
@@ -18,20 +25,7 @@ class CartController extends Controller
     public function cartAdd(Request $request)
     {
         $blog = json_decode($request->blogData, true);
-
-        $cart = $request->session()->get("cart", []);
-
-        $cart[] = [
-            "id" => $blog["id"],
-            "stripe_id" => $blog["stripe_id"],
-            "title" => $blog["title"],
-            "details" => $blog["details"],
-            "price" => $blog["price"],
-            "image" => $blog["eyecatch"]["url"],
-        ];
-
-        $request->session()->put("cart", $cart);
-
+        $this->cartService->addToCart($request, $blog);
         return redirect()->route("index")->with(["msg" => "カートに追加しました！"]);
     }
 
@@ -39,14 +33,7 @@ class CartController extends Controller
     public function cartDelete(Request $request)
     {
         $itemId = $request->input('item_id');
-        $cart = $request->session()->get('cart', []);
-
-        $updatedCart = array_filter($cart, function ($item) use ($itemId) {
-            return $item['id'] !== $itemId;
-        });
-
-        $request->session()->put('cart', array_values($updatedCart));
-
+        $this->cartService->removeFromCart($request, $itemId);
         return redirect()->route("cart");
     }
 }
