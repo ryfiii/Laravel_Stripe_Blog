@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\MicroCmsService;
 use App\Models\Purchase;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BoxController extends Controller
@@ -33,6 +34,7 @@ class BoxController extends Controller
     //ブログ閲覧処理
     public function blog($blog){
         $blog = $this->microCmsService->getBlogById($blog);
+        $blog["createdAt"] = Carbon::parse($blog["createdAt"])->format("Y/m/d H:i");
         return view("blog", compact("blog"));
     }
 }

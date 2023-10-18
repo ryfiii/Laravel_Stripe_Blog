@@ -10,6 +10,10 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <p>ご購入ありがとうございます！</p>
+                    <form action="{{ route('box') }}" method="get">
+                        @csrf
+                        <x-primary-button class="mt-5">Boxを見る</x-primary-button>
+                    </form>
                 </div>
             </div>
         </div>
