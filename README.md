@@ -27,6 +27,12 @@ StripeBlogは、記事の購入と閲覧ができるプラットフォームで�
 
 ![box.png](public/github_image/box.png)
 
+## 使用した技術スタック
+- Laravel (フロントはBlade, バックはLaravel)
+- Laravel Breeze (認証機能)
+- Stripe Api (決済システム)
+- WebHook ([Stripeでの購入処理が完了した時]というイベントをキャッチするため)
+
 ## 📖 ブログ画面
 
 ブログ画面で、購入した記事の内容を閲覧できます。
